@@ -3,47 +3,79 @@
   let waitTimeAfterClickOnTarget = 200;
   let waitTimeAfterClickOnNextPage = 2000;
   let maxNumberOfTargetBatches = 4;
-  let maxNumberOfTargetsToClickPerBatch = 3;
+  let maxNumberOfTargetsToClickPerBatch = 99;
 </script>
 
-<div class="flex flex-col space-y-2">
-  <input
-    type="number"
-    class="input input-primary"
-    placeholder="waitTimeAfterClickOnSend"
-    bind:value={waitTimeAfterClickOnSend}
-  />
-  <input
-    type="number"
-    class="input input-primary"
-    placeholder="waitTimeAfterClickOnTarget"
-    bind:value={waitTimeAfterClickOnTarget}
-  />
-  <input
-    type="number"
-    class="input input-primary"
-    placeholder="waitTimeAfterClickOnNextPage"
-    bind:value={waitTimeAfterClickOnNextPage}
-  />
-  <input
-    type="number"
-    class="input input-primary"
-    placeholder="maxNumberOfTargetBatches"
-    bind:value={maxNumberOfTargetBatches}
-  />
-  <input
-    type="number"
-    class="input input-primary"
-    placeholder="maxNumberOfTargetsToClickPerBatch"
-    bind:value={maxNumberOfTargetsToClickPerBatch}
-  />
+<div class="card card-compact glass">
+  <div class="flex space-x-2 pb-2 mx-auto">
+    <p class="badge badge-primary mx-auto text-lg">Linkedin</p>
+    <p class="badge badge-accent mx-auto text-lg">connect</p>
+  </div>
+  <div class="divider" />
+  <div class="flex flex-col space-y-2">
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">waitTimeAfterClickOnTarget</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="waitTimeAfterClickOnTarget"
+        bind:value={waitTimeAfterClickOnTarget}
+      />
+    </div>
+
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">waitTimeAfterClickOnTarget</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="waitTimeAfterClickOnTarget"
+        bind:value={waitTimeAfterClickOnTarget}
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">waitTimeAfterClickOnNextPage</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="waitTimeAfterClickOnNextPage"
+        bind:value={waitTimeAfterClickOnNextPage}
+      />
+    </div>
+    <div class="form-control w-full max-w-xs mt">
+      <label class="label mt-6">
+        <span class="label-text">maxNumberOfTargetBatches</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="maxNumberOfTargetBatches"
+        bind:value={maxNumberOfTargetBatches}
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">maxNumberOfTargetsToClickPerBatch</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="maxNumberOfTargetsToClickPerBatch"
+        bind:value={maxNumberOfTargetsToClickPerBatch}
+      />
+    </div>
+  </div>
 
   <button
-    class="btn btn-primary normal-case"
+    class="btn btn-primary normal-case mt-8"
     on:click={() => {
       ///;
       const runMyCode = (
-        test,
         waitTimeAfterClickOnSend,
         waitTimeAfterClickOnTarget,
         waitTimeAfterClickOnNextPage,
@@ -58,7 +90,6 @@
           maxNumberOfTargetBatches,
           maxNumberOfTargetsToClickPerBatch
         ) => {
-          console.log("hello from linkedin connect");
           //development.vargamarcel@gmail.com
           const clickOnSend = () => {
             const sendElement = document.querySelector(
@@ -80,12 +111,15 @@
               console.warn("no next element found");
               return;
             }
+            console.log("clicking on next page...");
             nextElement.click();
           };
-
+          const goToBottomOfPage = () => {
+            window.scrollTo(0, document.body.scrollHeight);
+          };
+          goToBottomOfPage();
           const className = "artdeco-button__text";
           const innerText = "Connect";
-
           const functionToRunAfterClickingOnTarget = clickOnSend;
           const clickOnTarget = (targetButtons, buttonIndex) => {
             const targetButton = targetButtons[buttonIndex];
@@ -98,7 +132,7 @@
                 buttonIndex + 1
               } of ${targetButtons_length}...`
             );
-            // targetButton.click(); //!!!uncomment this line to actually click on the target buttons
+            // targetButton.click() //!!!uncomment this line to actually click on the target buttons
           };
           const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
           const getTargetButtons = () =>
@@ -113,6 +147,7 @@
           var batchNumber = 1;
           console.clear();
           const clickOnNextTarget = (targetButtons, buttonIndex) => {
+            goToBottomOfPage();
             allTargetsWereClicked = false;
             if (
               buttonIndex < targetButtons_length &&
@@ -142,13 +177,12 @@
               }
             }
           };
+
           clickOnNextTarget(targetButtons, 0);
         };
         /////////
 
         console.log(
-          "now running my code",
-          test,
           waitTimeAfterClickOnSend,
           waitTimeAfterClickOnTarget,
           waitTimeAfterClickOnNextPage,
@@ -163,7 +197,7 @@
           maxNumberOfTargetsToClickPerBatch
         );
       };
-      const aa = async () => {
+      const setUp = async () => {
         const [tab] = await chrome.tabs.query({
           active: true,
           currentWindow: true,
@@ -173,7 +207,6 @@
           target: { tabId: tab.id },
 
           args: [
-            "test dsadgash jdg",
             waitTimeAfterClickOnSend,
             waitTimeAfterClickOnTarget,
             waitTimeAfterClickOnNextPage,
@@ -183,9 +216,9 @@
           func: runMyCode,
         });
       };
-      aa();
+      setUp();
     }}
   >
-    Click on all targets
+    Start clicking
   </button>
 </div>

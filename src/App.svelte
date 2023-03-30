@@ -6,7 +6,7 @@
 </script>
 
 <main>
-  <h1>Vite + Svelte</h1>
+  <h1>Social Tools</h1>
 
   <div class="card">
     <LinkedinConnect />

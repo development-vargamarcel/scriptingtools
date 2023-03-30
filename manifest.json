@@ -1,6 +1,6 @@
 {
-  "name": "Svelte Tailwind Chrome Extension",
-  "description": "Sample Extension using Svelte and Tailwind",
+  "name": "Social Tools",
+  "description": "Manage your social networks like a pro",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
