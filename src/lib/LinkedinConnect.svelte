@@ -132,7 +132,7 @@
                 buttonIndex + 1
               } of ${targetButtons_length}...`
             );
-            // targetButton.click() //!!!uncomment this line to actually click on the target buttons
+            targetButton.click(); //!!!uncomment this line to actually click on the target buttons
           };
           const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
           const getTargetButtons = () =>
