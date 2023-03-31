@@ -24,18 +24,18 @@
         bind:value={waitTimeAfterClickOnTarget}
       />
     </div>
-
     <div class="form-control w-full max-w-xs">
       <label class="label">
-        <span class="label-text">waitTimeAfterClickOnTarget</span>
+        <span class="label-text">waitTimeAfterClickOnSend</span>
       </label>
       <input
         type="number"
         class="input input-primary input-xs"
-        placeholder="waitTimeAfterClickOnTarget"
-        bind:value={waitTimeAfterClickOnTarget}
+        placeholder="waitTimeAfterClickOnSend"
+        bind:value={waitTimeAfterClickOnSend}
       />
     </div>
+
     <div class="form-control w-full max-w-xs">
       <label class="label">
         <span class="label-text">waitTimeAfterClickOnNextPage</span>
