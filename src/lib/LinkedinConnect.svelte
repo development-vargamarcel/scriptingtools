@@ -1,9 +1,159 @@
 <script>
-  let waitTimeAfterClickOnSend = 1000;
-  let waitTimeAfterClickOnTarget = 200;
+  let waitTimeAfterClickOnSend = 1;
+  let waitTimeAfterClickOnTarget = 1;
   let waitTimeAfterClickOnNextPage = 2000;
-  let maxNumberOfTargetBatches = 4;
+  let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
+
+  const injectCode = () => {
+    ///;
+    const runMyCode = (
+      waitTimeAfterClickOnSend,
+      waitTimeAfterClickOnTarget,
+      waitTimeAfterClickOnNextPage,
+      maxNumberOfTargetBatches,
+      maxNumberOfTargetsToClickPerBatch
+    ) => {
+      ////////
+      const wrapedLogic = (
+        waitTimeAfterClickOnSend,
+        waitTimeAfterClickOnTarget,
+        waitTimeAfterClickOnNextPage,
+        maxNumberOfTargetBatches,
+        maxNumberOfTargetsToClickPerBatch
+      ) => {
+        //development.vargamarcel@gmail.com
+        const clickOnSend = () => {
+          const sendElement = document.querySelector('[aria-label="Send now"]');
+          if (!sendElement) {
+            console.warn("no send element found");
+            return;
+          }
+          sendElement.click();
+        };
+        const clickOnNextPage = () => {
+          //goToBottomOfPage();
+          const nextElementClassName = "artdeco-button__text";
+          const nextElementInnerText = "Next";
+          const nextElement = [
+            ...document.getElementsByClassName(nextElementClassName),
+          ].find((item) => item.innerText === nextElementInnerText);
+          if (!nextElement) {
+            console.warn("no next element found");
+            return;
+          }
+          nextElement.scrollIntoView();
+          console.log("clicking on next page...");
+          nextElement.click();
+        };
+        const goToBottomOfPage = () => {
+          window.scrollTo(0, document.body.scrollHeight);
+        };
+
+        const className = "artdeco-button__text";
+        const innerText = "Connect";
+        const functionToRunAfterClickingOnTarget = clickOnSend;
+        const clickOnTarget = (targetButtons, buttonIndex) => {
+          const targetButton = targetButtons[buttonIndex];
+          if (!targetButton) {
+            console.warn("no target button found");
+            return;
+          }
+          targetButton.scrollIntoView();
+          console.log(
+            `clicking on target button ${
+              buttonIndex + 1
+            } of ${targetButtons_length}...`
+          );
+          targetButton.click(); //!!!uncomment this line to actually click on the target buttons
+        };
+        const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
+        const getTargetButtons = () => {
+          return [...document.getElementsByClassName(className)].filter(
+            (item) => item.innerText === innerText
+          );
+        };
+
+        var targetButtons = getTargetButtons();
+        let targetButtons_length = targetButtons.length;
+        //console.log(`I found ${targetButtons_length} target buttons. ETA is ${targetButtons_length * (waitTimeAfterClickOnTarget + waitTimeAfterClickOnSend) / 1000} seconds.`)
+        var allTargetsWereClicked = false;
+        var batchNumber = 1;
+        console.clear();
+        const clickOnNextTarget = (targetButtons, buttonIndex) => {
+          allTargetsWereClicked = false;
+          console.log({ targetButtons, buttonIndex, targetButtons_length });
+          if (
+            buttonIndex < targetButtons_length &&
+            buttonIndex < maxNumberOfTargetsToClickPerBatch
+          ) {
+            clickOnTarget(targetButtons, buttonIndex);
+            setTimeout(() => {
+              functionToRunAfterClickingOnTarget();
+              setTimeout(() => {
+                clickOnNextTarget(targetButtons, buttonIndex + 1);
+              }, waitTimeAfterClickOnSend);
+            }, waitTimeAfterClickOnTarget);
+          } else {
+            batchNumber++;
+            if (batchNumber <= maxNumberOfTargetBatches) {
+              functionToRunToGetANewBatchOfTargetButtons();
+              targetButtons = getTargetButtons();
+              targetButtons_length = targetButtons.length;
+              //console.clear();
+              console.info(
+                `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
+              );
+              setTimeout(() => {
+                clickOnNextTarget(targetButtons, 0);
+              }, waitTimeAfterClickOnNextPage);
+            } else {
+              //  console.clear();
+              console.log("I am done. All targets were clicked.");
+            }
+          }
+        };
+
+        clickOnNextTarget(targetButtons, 0);
+      };
+      /////////
+
+      console.log(
+        waitTimeAfterClickOnSend,
+        waitTimeAfterClickOnTarget,
+        waitTimeAfterClickOnNextPage,
+        maxNumberOfTargetBatches,
+        maxNumberOfTargetsToClickPerBatch
+      );
+      wrapedLogic(
+        waitTimeAfterClickOnSend,
+        waitTimeAfterClickOnTarget,
+        waitTimeAfterClickOnNextPage,
+        maxNumberOfTargetBatches,
+        maxNumberOfTargetsToClickPerBatch
+      );
+    };
+    const setUp = async () => {
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+
+        args: [
+          waitTimeAfterClickOnSend,
+          waitTimeAfterClickOnTarget,
+          waitTimeAfterClickOnNextPage,
+          maxNumberOfTargetBatches,
+          maxNumberOfTargetsToClickPerBatch,
+        ],
+        func: runMyCode,
+      });
+    };
+    setUp();
+  };
 </script>
 
 <div class="card card-compact glass">
@@ -71,154 +221,7 @@
     </div>
   </div>
 
-  <button
-    class="btn btn-primary normal-case mt-8"
-    on:click={() => {
-      ///;
-      const runMyCode = (
-        waitTimeAfterClickOnSend,
-        waitTimeAfterClickOnTarget,
-        waitTimeAfterClickOnNextPage,
-        maxNumberOfTargetBatches,
-        maxNumberOfTargetsToClickPerBatch
-      ) => {
-        ////////
-        const wrapedLogic = (
-          waitTimeAfterClickOnSend,
-          waitTimeAfterClickOnTarget,
-          waitTimeAfterClickOnNextPage,
-          maxNumberOfTargetBatches,
-          maxNumberOfTargetsToClickPerBatch
-        ) => {
-          //development.vargamarcel@gmail.com
-          const clickOnSend = () => {
-            const sendElement = document.querySelector(
-              '[aria-label="Send now"]'
-            );
-            if (!sendElement) {
-              console.warn("no send element found");
-              return;
-            }
-            sendElement.click();
-          };
-          const clickOnNextPage = () => {
-            const nextElementClassName = "artdeco-button__text";
-            const nextElementInnerText = "Next";
-            const nextElement = [
-              ...document.getElementsByClassName(nextElementClassName),
-            ].find((item) => item.innerText === nextElementInnerText);
-            if (!nextElement) {
-              console.warn("no next element found");
-              return;
-            }
-            console.log("clicking on next page...");
-            nextElement.click();
-          };
-          const goToBottomOfPage = () => {
-            window.scrollTo(0, document.body.scrollHeight);
-          };
-          goToBottomOfPage();
-          const className = "artdeco-button__text";
-          const innerText = "Connect";
-          const functionToRunAfterClickingOnTarget = clickOnSend;
-          const clickOnTarget = (targetButtons, buttonIndex) => {
-            const targetButton = targetButtons[buttonIndex];
-            if (!targetButton) {
-              console.warn("no target button found");
-              return;
-            }
-            console.log(
-              `clicking on target button ${
-                buttonIndex + 1
-              } of ${targetButtons_length}...`
-            );
-            targetButton.click(); //!!!uncomment this line to actually click on the target buttons
-          };
-          const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
-          const getTargetButtons = () =>
-            [...document.getElementsByClassName(className)].filter(
-              (item) => item.innerText === innerText
-            );
-
-          var targetButtons = getTargetButtons();
-          let targetButtons_length = targetButtons.length;
-          //console.log(`I found ${targetButtons_length} target buttons. ETA is ${targetButtons_length * (waitTimeAfterClickOnTarget + waitTimeAfterClickOnSend) / 1000} seconds.`)
-          var allTargetsWereClicked = false;
-          var batchNumber = 1;
-          console.clear();
-          const clickOnNextTarget = (targetButtons, buttonIndex) => {
-            goToBottomOfPage();
-            allTargetsWereClicked = false;
-            if (
-              buttonIndex < targetButtons_length &&
-              buttonIndex < maxNumberOfTargetsToClickPerBatch
-            ) {
-              clickOnTarget(targetButtons, buttonIndex);
-              setTimeout(() => {
-                functionToRunAfterClickingOnTarget();
-                setTimeout(() => {
-                  clickOnNextTarget(targetButtons, buttonIndex + 1);
-                }, waitTimeAfterClickOnSend);
-              }, waitTimeAfterClickOnTarget);
-            } else {
-              batchNumber++;
-              if (batchNumber <= maxNumberOfTargetBatches) {
-                functionToRunToGetANewBatchOfTargetButtons();
-                console.clear();
-                console.info(
-                  `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
-                );
-                setTimeout(() => {
-                  clickOnNextTarget(targetButtons, 0);
-                }, waitTimeAfterClickOnNextPage);
-              } else {
-                console.clear();
-                console.log("I am done. All targets were clicked.");
-              }
-            }
-          };
-
-          clickOnNextTarget(targetButtons, 0);
-        };
-        /////////
-
-        console.log(
-          waitTimeAfterClickOnSend,
-          waitTimeAfterClickOnTarget,
-          waitTimeAfterClickOnNextPage,
-          maxNumberOfTargetBatches,
-          maxNumberOfTargetsToClickPerBatch
-        );
-        wrapedLogic(
-          waitTimeAfterClickOnSend,
-          waitTimeAfterClickOnTarget,
-          waitTimeAfterClickOnNextPage,
-          maxNumberOfTargetBatches,
-          maxNumberOfTargetsToClickPerBatch
-        );
-      };
-      const setUp = async () => {
-        const [tab] = await chrome.tabs.query({
-          active: true,
-          currentWindow: true,
-        });
-
-        await chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-
-          args: [
-            waitTimeAfterClickOnSend,
-            waitTimeAfterClickOnTarget,
-            waitTimeAfterClickOnNextPage,
-            maxNumberOfTargetBatches,
-            maxNumberOfTargetsToClickPerBatch,
-          ],
-          func: runMyCode,
-        });
-      };
-      setUp();
-    }}
-  >
+  <button class="btn btn-primary normal-case mt-8" on:click={injectCode}>
     Start clicking
   </button>
 </div>
