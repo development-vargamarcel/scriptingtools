@@ -1,6 +1,6 @@
 <script>
-  let waitTimeAfterClickOnSend = 1;
-  let waitTimeAfterClickOnTarget = 1;
+  let waitTimeAfterClickOnSend = 500;
+  let waitTimeAfterClickOnTarget = 500;
   let waitTimeAfterClickOnNextPage = 2000;
   let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
