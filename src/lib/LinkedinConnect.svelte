@@ -84,6 +84,22 @@
           allTargetsWereClicked = false;
           console.log({ targetButtons, buttonIndex, targetButtons_length });
           if (
+            !(
+              buttonIndex < targetButtons_length &&
+              buttonIndex < maxNumberOfTargetsToClickPerBatch
+            )
+          ) {
+            targetButtons = getTargetButtons();
+            targetButtons_length = targetButtons.length;
+            buttonIndex = 0;
+            console.log("refetched buttons", {
+              targetButtons,
+              buttonIndex,
+              targetButtons_length,
+            });
+          }
+
+          if (
             buttonIndex < targetButtons_length &&
             buttonIndex < maxNumberOfTargetsToClickPerBatch
           ) {
@@ -94,24 +110,25 @@
                 clickOnNextTarget(targetButtons, buttonIndex + 1);
               }, waitTimeAfterClickOnSend);
             }, waitTimeAfterClickOnTarget);
-          } else {
-            batchNumber++;
-            if (batchNumber <= maxNumberOfTargetBatches) {
-              functionToRunToGetANewBatchOfTargetButtons();
-              targetButtons = getTargetButtons();
-              targetButtons_length = targetButtons.length;
-              //console.clear();
-              console.info(
-                `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
-              );
-              setTimeout(() => {
-                clickOnNextTarget(targetButtons, 0);
-              }, waitTimeAfterClickOnNextPage);
-            } else {
-              //  console.clear();
-              console.log("I am done. All targets were clicked.");
-            }
+            return;
           }
+          batchNumber++;
+          if (batchNumber <= maxNumberOfTargetBatches) {
+            functionToRunToGetANewBatchOfTargetButtons();
+            targetButtons = getTargetButtons();
+            targetButtons_length = targetButtons.length;
+            //console.clear();
+            console.info(
+              `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
+            );
+            setTimeout(() => {
+              clickOnNextTarget(targetButtons, 0);
+            }, waitTimeAfterClickOnNextPage);
+          } else {
+            //  console.clear();
+            console.log("I am done. All targets were clicked.");
+          }
+          return;
         };
 
         clickOnNextTarget(targetButtons, 0);
