@@ -1,13 +1,13 @@
 <script>
-  let waitTimeAfterClickOnSend = 2100;
-  let waitTimeAfterClickOnTarget = 2100;
+  let waitTimeAfterClickOnSend = 1000;
+  let waitTimeAfterClickOnTarget = 1000;
   let waitTimeAfterClickOnNextPage = 2000;
   let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
-  let errorInPercentage = 20; //used for some randomness in the clicking
-  let obstacleElementsSelectorsAsText = `[aria-label="Send without a note"]
-  [aria-label="Send now"]
-  `;
+  let errorInPercentage = 70; //used for some randomness in the clicking
+  let obstacleElementsSelectorsAsText = `
+[aria-label="Send without a note"]
+[aria-label="Send now"]`;
   const injectCode = () => {
     ///;
     const runMyCode = (
@@ -15,7 +15,9 @@
       waitTimeAfterClickOnTarget,
       waitTimeAfterClickOnNextPage,
       maxNumberOfTargetBatches,
-      maxNumberOfTargetsToClickPerBatch
+      maxNumberOfTargetsToClickPerBatch,
+      errorInPercentage,
+      obstacleElementsSelectorsAsText
     ) => {
       ////////
       const wrapedLogic = (
@@ -23,7 +25,9 @@
         waitTimeAfterClickOnTarget,
         waitTimeAfterClickOnNextPage,
         maxNumberOfTargetBatches,
-        maxNumberOfTargetsToClickPerBatch
+        maxNumberOfTargetsToClickPerBatch,
+        errorInPercentage,
+        obstacleElementsSelectorsAsText
       ) => {
         function addRelativeError(milliseconds, errorPercentage) {
           // Convert the percentage error into a decimal
@@ -44,18 +48,20 @@
         function textToArray(text) {
           return text.split("\n");
         }
-        const clickOnObstacles = (obstacleElementsSelectorsAsText) => {
+        const clickOnObstacles = () => {
           const obstacleElementsSelectors = textToArray(
             obstacleElementsSelectorsAsText
           );
-          obstacleElementsSelectors.forEach((selector) => {
-            const obstacleElement = document.querySelector(selector);
-            if (!obstacleElement) {
-              console.warn("no obstacle element found", selector);
-              return;
-            }
-            obstacleElement.click();
-          });
+          obstacleElementsSelectors
+            .filter((element) => element !== "")
+            .forEach((selector) => {
+              const obstacleElement = document.querySelector(selector);
+              if (!obstacleElement) {
+                console.warn("no obstacle element found", selector);
+                return;
+              }
+              obstacleElement.click();
+            });
         };
         //development.vargamarcel@gmail.com
         const clickOnSend = () => {
@@ -184,14 +190,18 @@
         waitTimeAfterClickOnTarget,
         waitTimeAfterClickOnNextPage,
         maxNumberOfTargetBatches,
-        maxNumberOfTargetsToClickPerBatch
+        maxNumberOfTargetsToClickPerBatch,
+        errorInPercentage,
+        obstacleElementsSelectorsAsText
       );
       wrapedLogic(
         waitTimeAfterClickOnSend,
         waitTimeAfterClickOnTarget,
         waitTimeAfterClickOnNextPage,
         maxNumberOfTargetBatches,
-        maxNumberOfTargetsToClickPerBatch
+        maxNumberOfTargetsToClickPerBatch,
+        errorInPercentage,
+        obstacleElementsSelectorsAsText
       );
     };
     const setUp = async () => {
@@ -209,6 +219,8 @@
           waitTimeAfterClickOnNextPage,
           maxNumberOfTargetBatches,
           maxNumberOfTargetsToClickPerBatch,
+          errorInPercentage,
+          obstacleElementsSelectorsAsText,
         ],
         func: runMyCode,
       });
@@ -217,7 +229,7 @@
   };
 </script>
 
-<div class="card card-compact glass h-[90vh] overflow-auto">
+<div class="card card-compact glass overflow-auto">
   <div class="flex space-x-2 pb-2 mx-auto">
     <p class="badge badge-primary mx-auto text-lg">Linkedin</p>
     <p class="badge badge-accent mx-auto text-lg">connect</p>
