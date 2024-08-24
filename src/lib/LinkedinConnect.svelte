@@ -5,6 +5,8 @@
   let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
   let errorInPercentage = 20; //used for some randomness in the clicking
+  let obstacleElementsSelectorsAsText = `.artdeco-button__text
+  `;
   const injectCode = () => {
     ///;
     const runMyCode = (
@@ -38,6 +40,22 @@
           // Return the final result, rounded to the nearest integer
           return Math.round(result);
         }
+        function textToArray(text) {
+          return text.split("\n");
+        }
+        const clickOnObstacle = () => {
+          const obstacleElementsSelectors = textToArray(
+            obstacleElementsSelectorsAsText
+          );
+          obstacleElementsSelectors.forEach((selector) => {
+            const obstacleElement = document.querySelector(selector);
+            if (!obstacleElement) {
+              console.warn("no obstacle element found", selector);
+              return;
+            }
+            obstacleElement.click();
+          });
+        };
         //development.vargamarcel@gmail.com
         const clickOnSend = () => {
           const sendElement = document.querySelector('[aria-label="Send now"]');
@@ -270,6 +288,16 @@
         class="input input-primary input-xs"
         placeholder="errorInPercentage"
         bind:value={errorInPercentage}
+      />
+    </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">obstacleElementsSelectorsAsText</span>
+      </label>
+      <textarea
+        class="input input-primary input-xs"
+        placeholder="obstacleElementsSelectorsAsText"
+        bind:value={obstacleElementsSelectorsAsText}
       />
     </div>
   </div>
