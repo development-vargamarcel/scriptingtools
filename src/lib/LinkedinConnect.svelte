@@ -5,7 +5,8 @@
   let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
   let errorInPercentage = 20; //used for some randomness in the clicking
-  let obstacleElementsSelectorsAsText = `.artdeco-button__text
+  let obstacleElementsSelectorsAsText = `[aria-label="Send without a note"]
+  [aria-label="Send now"]
   `;
   const injectCode = () => {
     ///;
@@ -43,7 +44,7 @@
         function textToArray(text) {
           return text.split("\n");
         }
-        const clickOnObstacle = () => {
+        const clickOnObstacles = (obstacleElementsSelectorsAsText) => {
           const obstacleElementsSelectors = textToArray(
             obstacleElementsSelectorsAsText
           );
@@ -86,7 +87,7 @@
 
         const className = "artdeco-button__text";
         const innerText = "Connect";
-        const functionToRunAfterClickingOnTarget = clickOnSend;
+        const functionToRunAfterClickingOnTarget = clickOnObstacles;
         const clickOnTarget = (targetButtons, buttonIndex) => {
           const targetButton = targetButtons[buttonIndex];
           if (!targetButton) {
