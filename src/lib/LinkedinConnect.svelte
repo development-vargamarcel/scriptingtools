@@ -7,7 +7,8 @@
   let errorInPercentage = 70; //used for some randomness in the clicking
   let obstacleElementsSelectorsAsText = `
 [aria-label="Send without a note"]
-[aria-label="Send now"]`;
+[aria-label="Send now"]
+[aria-label="Got It"]`;
   const injectCode = () => {
     ///;
     const runMyCode = (
