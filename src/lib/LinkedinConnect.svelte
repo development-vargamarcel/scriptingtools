@@ -1,10 +1,10 @@
 <script>
-  let waitTimeAfterClickOnSend = 500;
-  let waitTimeAfterClickOnTarget = 500;
+  let waitTimeAfterClickOnSend = 2100;
+  let waitTimeAfterClickOnTarget = 2100;
   let waitTimeAfterClickOnNextPage = 2000;
   let maxNumberOfTargetBatches = 1;
   let maxNumberOfTargetsToClickPerBatch = 99;
-
+  let errorInPercentage = 20; //used for some randomness in the clicking
   const injectCode = () => {
     ///;
     const runMyCode = (
@@ -22,6 +22,22 @@
         maxNumberOfTargetBatches,
         maxNumberOfTargetsToClickPerBatch
       ) => {
+        function addRelativeError(milliseconds, errorPercentage) {
+          // Convert the percentage error into a decimal
+          const errorDecimal = errorPercentage / 100;
+
+          // Calculate the relative error amount
+          const errorAmount = milliseconds * errorDecimal;
+
+          // Generate a random sign (+ or -) to apply the error randomly
+          const sign = Math.random() < 0.5 ? -1 : 1;
+
+          // Apply the error amount to the original milliseconds
+          const result = milliseconds + sign * errorAmount;
+
+          // Return the final result, rounded to the nearest integer
+          return Math.round(result);
+        }
         //development.vargamarcel@gmail.com
         const clickOnSend = () => {
           const sendElement = document.querySelector('[aria-label="Send now"]');
@@ -104,12 +120,18 @@
             buttonIndex < maxNumberOfTargetsToClickPerBatch
           ) {
             clickOnTarget(targetButtons, buttonIndex);
-            setTimeout(() => {
-              functionToRunAfterClickingOnTarget();
-              setTimeout(() => {
-                clickOnNextTarget(targetButtons, buttonIndex + 1);
-              }, waitTimeAfterClickOnSend);
-            }, waitTimeAfterClickOnTarget);
+            setTimeout(
+              () => {
+                functionToRunAfterClickingOnTarget();
+                setTimeout(
+                  () => {
+                    clickOnNextTarget(targetButtons, buttonIndex + 1);
+                  },
+                  addRelativeError(waitTimeAfterClickOnSend, errorInPercentage)
+                );
+              },
+              addRelativeError(waitTimeAfterClickOnTarget, errorInPercentage)
+            );
             return;
           }
           batchNumber++;
@@ -121,9 +143,12 @@
             console.info(
               `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
             );
-            setTimeout(() => {
-              clickOnNextTarget(targetButtons, 0);
-            }, waitTimeAfterClickOnNextPage);
+            setTimeout(
+              () => {
+                clickOnNextTarget(targetButtons, 0);
+              },
+              addRelativeError(waitTimeAfterClickOnNextPage, errorInPercentage)
+            );
           } else {
             //  console.clear();
             console.log("I am done. All targets were clicked.");
@@ -173,7 +198,7 @@
   };
 </script>
 
-<div class="card card-compact glass">
+<div class="card card-compact glass h-min max-h-[50vh] overflow-auto">
   <div class="flex space-x-2 pb-2 mx-auto">
     <p class="badge badge-primary mx-auto text-lg">Linkedin</p>
     <p class="badge badge-accent mx-auto text-lg">connect</p>
@@ -236,9 +261,26 @@
         bind:value={maxNumberOfTargetsToClickPerBatch}
       />
     </div>
+    <div class="form-control w-full max-w-xs">
+      <label class="label">
+        <span class="label-text">errorInPercentage</span>
+      </label>
+      <input
+        type="number"
+        class="input input-primary input-xs"
+        placeholder="errorInPercentage"
+        bind:value={errorInPercentage}
+      />
+    </div>
   </div>
 
   <button class="btn btn-primary normal-case mt-8" on:click={injectCode}>
     Start clicking
+  </button>
+
+  <div class="divider" />
+
+  <button class="btn btn-primary normal-case mt-8" on:click={injectCode}>
+    Start clicking custom flow
   </button>
 </div>
