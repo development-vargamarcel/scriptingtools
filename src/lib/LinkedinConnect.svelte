@@ -217,7 +217,7 @@
   };
 </script>
 
-<div class="card card-compact glass h-min max-h-[50vh] overflow-auto">
+<div class="card card-compact glass h-[90vh] overflow-auto">
   <div class="flex space-x-2 pb-2 mx-auto">
     <p class="badge badge-primary mx-auto text-lg">Linkedin</p>
     <p class="badge badge-accent mx-auto text-lg">connect</p>
