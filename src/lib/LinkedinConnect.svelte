@@ -40,6 +40,41 @@
 [aria-label="Got It"]`;
   const injectCode = () => {
     ///;
+    const doTheSteps = (
+      waitTimeAfterClickOnSend,
+      waitTimeAfterClickOnTarget,
+      waitTimeAfterClickOnNextPage,
+      maxNumberOfTargetBatches,
+      maxNumberOfTargetsToClickPerBatch,
+      errorInPercentage,
+      obstacleElementsSelectorsAsText,
+      steps,
+    ) => {
+      const runStep = (step) => {
+        console.log(step);
+        const {
+          name,
+          waitTimeBeforeClick,
+          waitTimeAfterClick,
+          waitTimeBetweenClicks,
+          waitTimeAfterrevealingMoreSelectors,
+          actionToRunBeforeClick,
+          actionToRunAfterClick,
+          shouldRerunUntilNoSelectorsFound,
+          forceStopMethod,
+          selectorsToClick,
+          revealMoreSelectorsMethod,
+        } = step;
+      };
+
+      //
+      //
+
+      steps.forEach((step) => {
+        runStep(step);
+      });
+    };
+
     const runMyCode = (
       waitTimeAfterClickOnSend,
       waitTimeAfterClickOnTarget,
@@ -265,7 +300,8 @@
           obstacleElementsSelectorsAsText,
           steps,
         ],
-        func: runMyCode,
+        //  func: runMyCode,
+        func: doTheSteps,
       });
     };
     setUp();
