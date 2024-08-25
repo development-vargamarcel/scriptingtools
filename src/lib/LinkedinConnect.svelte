@@ -9,8 +9,9 @@
       actionToRunBeforeClick: ``,
       actionToRunAfterClick: ``,
       shouldRerunUntilNoSelectorsFound: true,
+      forceStopMethod: `exists:[aria-label="limit reached"]`,
       selectorsToClick: ['[aria-label="Connect"]'],
-      revealMoreSelectorsMethod: `clickOn:[aria-label="Next"]/goToBottomOfPage`,
+      revealMoreSelectorsMethod: `click:[aria-label="Next"]/jump:bottomOfPage`,
     },
     {
       name: "clickOnObstacles",
@@ -60,6 +61,14 @@
         obstacleElementsSelectorsAsText,
         steps,
       ) => {
+        //////
+        const followTheSteps = (steps) => {
+          steps.forEach((step) => {
+            console.log(step);
+          });
+        };
+
+        /////
         function addRelativeError(milliseconds, errorPercentage) {
           // Convert the percentage error into a decimal
           const errorDecimal = errorPercentage / 100;
