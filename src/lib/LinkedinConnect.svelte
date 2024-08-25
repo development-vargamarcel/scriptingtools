@@ -1,4 +1,33 @@
 <script>
+  const steps = [
+    {
+      name: "clickOnConnect",
+      shouldRerunUntilNoSelectorsFound: true,
+      selectorsToClick: ['[aria-label="Connect"]'],
+      waitTimeBeforeClick: 1000,
+      waitTimeAfterClick: 1000,
+      waitTimeBetweenClicks: 1000,
+      getMoreSelectorsMethod: `clickOn:[aria-label="Next"]/goToBottomOfPage`,
+      waitTimeAfterGettingMoreSelectors: 1000,
+      actionToRunBeforeClick: ``,
+      actionToRunAfterClick: ``,
+    },
+    {
+      name: "clickOnObstacles",
+      selectorsToClick: [
+        '[aria-label="Send now"]',
+        '[aria-label="Send without a note"]',
+      ],
+      waitTimeBeforeClick: 1000,
+      waitTimeAfterClick: 1000,
+      waitTimeBetweenClicks: 1000,
+      shouldRerunUntilNoSelectorsFound: true,
+      functionToRunAfterClick: () => {
+        console.log("clicked on obstacles");
+      },
+    },
+  ];
+
   let waitTimeAfterClickOnSend = 1000;
   let waitTimeAfterClickOnTarget = 1000;
   let waitTimeAfterClickOnNextPage = 2000;
@@ -18,7 +47,7 @@
       maxNumberOfTargetBatches,
       maxNumberOfTargetsToClickPerBatch,
       errorInPercentage,
-      obstacleElementsSelectorsAsText
+      obstacleElementsSelectorsAsText,
     ) => {
       ////////
       const wrapedLogic = (
@@ -28,7 +57,7 @@
         maxNumberOfTargetBatches,
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
-        obstacleElementsSelectorsAsText
+        obstacleElementsSelectorsAsText,
       ) => {
         function addRelativeError(milliseconds, errorPercentage) {
           // Convert the percentage error into a decimal
@@ -51,7 +80,7 @@
         }
         const clickOnObstacles = () => {
           const obstacleElementsSelectors = textToArray(
-            obstacleElementsSelectorsAsText
+            obstacleElementsSelectorsAsText,
           );
           obstacleElementsSelectors
             .filter((element) => element !== "")
@@ -105,14 +134,14 @@
           console.log(
             `clicking on target button ${
               buttonIndex + 1
-            } of ${targetButtons_length}...`
+            } of ${targetButtons_length}...`,
           );
           targetButton.click(); //!!!uncomment this line to actually click on the target buttons
         };
         const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
         const getTargetButtons = () => {
           return [...document.getElementsByClassName(className)].filter(
-            (item) => item.innerText === innerText
+            (item) => item.innerText === innerText,
           );
         };
 
@@ -153,10 +182,10 @@
                   () => {
                     clickOnNextTarget(targetButtons, buttonIndex + 1);
                   },
-                  addRelativeError(waitTimeAfterClickOnSend, errorInPercentage)
+                  addRelativeError(waitTimeAfterClickOnSend, errorInPercentage),
                 );
               },
-              addRelativeError(waitTimeAfterClickOnTarget, errorInPercentage)
+              addRelativeError(waitTimeAfterClickOnTarget, errorInPercentage),
             );
             return;
           }
@@ -167,13 +196,13 @@
             targetButtons_length = targetButtons.length;
             //console.clear();
             console.info(
-              `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
+              `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `,
             );
             setTimeout(
               () => {
                 clickOnNextTarget(targetButtons, 0);
               },
-              addRelativeError(waitTimeAfterClickOnNextPage, errorInPercentage)
+              addRelativeError(waitTimeAfterClickOnNextPage, errorInPercentage),
             );
           } else {
             //  console.clear();
@@ -193,7 +222,7 @@
         maxNumberOfTargetBatches,
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
-        obstacleElementsSelectorsAsText
+        obstacleElementsSelectorsAsText,
       );
       wrapedLogic(
         waitTimeAfterClickOnSend,
@@ -202,7 +231,7 @@
         maxNumberOfTargetBatches,
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
-        obstacleElementsSelectorsAsText
+        obstacleElementsSelectorsAsText,
       );
     };
     const setUp = async () => {
