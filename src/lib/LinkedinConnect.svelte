@@ -2,29 +2,28 @@
   const steps = [
     {
       name: "clickOnConnect",
-      shouldRerunUntilNoSelectorsFound: true,
-      selectorsToClick: ['[aria-label="Connect"]'],
       waitTimeBeforeClick: 1000,
       waitTimeAfterClick: 1000,
       waitTimeBetweenClicks: 1000,
-      getMoreSelectorsMethod: `clickOn:[aria-label="Next"]/goToBottomOfPage`,
-      waitTimeAfterGettingMoreSelectors: 1000,
+      waitTimeAfterrevealingMoreSelectors: 1000,
       actionToRunBeforeClick: ``,
       actionToRunAfterClick: ``,
+      shouldRerunUntilNoSelectorsFound: true,
+      selectorsToClick: ['[aria-label="Connect"]'],
+      revealMoreSelectorsMethod: `clickOn:[aria-label="Next"]/goToBottomOfPage`,
     },
     {
       name: "clickOnObstacles",
+      waitTimeBeforeClick: 1000,
+      waitTimeAfterClick: 1000,
+      waitTimeBetweenClicks: 1000,
+      actionToRunBeforeClick: ``,
+      actionToRunAfterClick: ``,
+      shouldRerunUntilNoSelectorsFound: true,
       selectorsToClick: [
         '[aria-label="Send now"]',
         '[aria-label="Send without a note"]',
       ],
-      waitTimeBeforeClick: 1000,
-      waitTimeAfterClick: 1000,
-      waitTimeBetweenClicks: 1000,
-      shouldRerunUntilNoSelectorsFound: true,
-      functionToRunAfterClick: () => {
-        console.log("clicked on obstacles");
-      },
     },
   ];
 
@@ -48,6 +47,7 @@
       maxNumberOfTargetsToClickPerBatch,
       errorInPercentage,
       obstacleElementsSelectorsAsText,
+      steps,
     ) => {
       ////////
       const wrapedLogic = (
@@ -58,6 +58,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
+        steps,
       ) => {
         function addRelativeError(milliseconds, errorPercentage) {
           // Convert the percentage error into a decimal
@@ -223,6 +224,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
+        steps,
       );
       wrapedLogic(
         waitTimeAfterClickOnSend,
@@ -232,6 +234,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
+        steps,
       );
     };
     const setUp = async () => {
@@ -251,6 +254,7 @@
           maxNumberOfTargetsToClickPerBatch,
           errorInPercentage,
           obstacleElementsSelectorsAsText,
+          steps,
         ],
         func: runMyCode,
       });
