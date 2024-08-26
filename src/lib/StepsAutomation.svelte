@@ -300,7 +300,8 @@
           obstacleElementsSelectorsAsText,
           steps,
         ],
-        func: runMyCode,
+        //  func: runMyCode,
+        func: doTheSteps,
       });
     };
     setUp();
