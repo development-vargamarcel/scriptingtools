@@ -301,10 +301,7 @@
           steps,
         ],
         func: runMyCode,
-<<<<<<< HEAD
         //func: doTheSteps,
-=======
->>>>>>> 3099156ef5eef1906a5a900f229fbd10fec9d30c
       });
     };
     setUp();
