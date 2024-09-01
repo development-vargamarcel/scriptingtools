@@ -37,7 +37,7 @@
   let obstacleElementsSelectorsAsText = `
 [aria-label="Send without a note"]
 [aria-label="Send now"]
-[aria-label="Got it"]`;
+[aria-label="Got It"]`;
   const injectCode = () => {
     ///;
     const doTheSteps = (
@@ -300,11 +300,8 @@
           obstacleElementsSelectorsAsText,
           steps,
         ],
-        func: runMyCode,
-<<<<<<< HEAD
-        //func: doTheSteps,
-=======
->>>>>>> 3099156ef5eef1906a5a900f229fbd10fec9d30c
+        //  func: runMyCode,
+        func: doTheSteps,
       });
     };
     setUp();
