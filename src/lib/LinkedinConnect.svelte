@@ -37,7 +37,7 @@
   let obstacleElementsSelectorsAsText = `
 [aria-label="Send without a note"]
 [aria-label="Send now"]
-[aria-label="Got It"]`;
+[aria-label="Got it"]`;
   const injectCode = () => {
     ///;
     const doTheSteps = (
@@ -48,7 +48,7 @@
       maxNumberOfTargetsToClickPerBatch,
       errorInPercentage,
       obstacleElementsSelectorsAsText,
-      steps,
+      steps
     ) => {
       const runStep = (step) => {
         console.log(step);
@@ -83,7 +83,7 @@
       maxNumberOfTargetsToClickPerBatch,
       errorInPercentage,
       obstacleElementsSelectorsAsText,
-      steps,
+      steps
     ) => {
       ////////
       const wrapedLogic = (
@@ -94,7 +94,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
-        steps,
+        steps
       ) => {
         //////
         const followTheSteps = (steps) => {
@@ -125,7 +125,7 @@
         }
         const clickOnObstacles = () => {
           const obstacleElementsSelectors = textToArray(
-            obstacleElementsSelectorsAsText,
+            obstacleElementsSelectorsAsText
           );
           obstacleElementsSelectors
             .filter((element) => element !== "")
@@ -179,14 +179,14 @@
           console.log(
             `clicking on target button ${
               buttonIndex + 1
-            } of ${targetButtons_length}...`,
+            } of ${targetButtons_length}...`
           );
           targetButton.click(); //!!!uncomment this line to actually click on the target buttons
         };
         const functionToRunToGetANewBatchOfTargetButtons = clickOnNextPage;
         const getTargetButtons = () => {
           return [...document.getElementsByClassName(className)].filter(
-            (item) => item.innerText === innerText,
+            (item) => item.innerText === innerText
           );
         };
 
@@ -227,10 +227,10 @@
                   () => {
                     clickOnNextTarget(targetButtons, buttonIndex + 1);
                   },
-                  addRelativeError(waitTimeAfterClickOnSend, errorInPercentage),
+                  addRelativeError(waitTimeAfterClickOnSend, errorInPercentage)
                 );
               },
-              addRelativeError(waitTimeAfterClickOnTarget, errorInPercentage),
+              addRelativeError(waitTimeAfterClickOnTarget, errorInPercentage)
             );
             return;
           }
@@ -241,13 +241,13 @@
             targetButtons_length = targetButtons.length;
             //console.clear();
             console.info(
-              `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `,
+              `Getting new batch of targets:${batchNumber}/${maxNumberOfTargetBatches} `
             );
             setTimeout(
               () => {
                 clickOnNextTarget(targetButtons, 0);
               },
-              addRelativeError(waitTimeAfterClickOnNextPage, errorInPercentage),
+              addRelativeError(waitTimeAfterClickOnNextPage, errorInPercentage)
             );
           } else {
             //  console.clear();
@@ -268,7 +268,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
-        steps,
+        steps
       );
       wrapedLogic(
         waitTimeAfterClickOnSend,
@@ -278,7 +278,7 @@
         maxNumberOfTargetsToClickPerBatch,
         errorInPercentage,
         obstacleElementsSelectorsAsText,
-        steps,
+        steps
       );
     };
     const setUp = async () => {
@@ -300,8 +300,8 @@
           obstacleElementsSelectorsAsText,
           steps,
         ],
-        //  func: runMyCode,
-        func: doTheSteps,
+        func: runMyCode,
+        //func: doTheSteps,
       });
     };
     setUp();
