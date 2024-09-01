@@ -37,7 +37,8 @@
   let obstacleElementsSelectorsAsText = `
 [aria-label="Send without a note"]
 [aria-label="Send now"]
-[aria-label="Got it"]`;
+[aria-label="Got it"]
+.ip-fuse-limit-alert__header.t-20.t-black.ph4::reload`;
   const injectCode = () => {
     ///;
     const doTheSteps = (
@@ -130,12 +131,20 @@
           obstacleElementsSelectors
             .filter((element) => element !== "")
             .forEach((selector) => {
-              const obstacleElement = document.querySelector(selector);
+              const selectorAndMeaning = selector.split("::");
+
+              const obstacleElement = document.querySelector(
+                selectorAndMeaning[0]
+              );
               if (!obstacleElement) {
                 console.warn("no obstacle element found", selector);
                 return;
               }
-              obstacleElement.click();
+              if (selectorAndMeaning?.[1] === "reload") {
+                location.reload();
+              } else {
+                obstacleElement.click();
+              }
             });
         };
         //development.vargamarcel@gmail.com
